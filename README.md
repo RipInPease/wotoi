@@ -17,7 +17,7 @@ $ sudo cp target/release/wotoi /usr/bin
 
 TBD.
 
-## Why is this the best of the worst
+## Why this is the best of the worst
 Simple!
 
 Because I use no dependencies! That means it is automatically better....right?
