@@ -10,8 +10,16 @@ This is an issue tracker inspired by Tsoding's [tatr](https://github.com/tsoding
 
 `$ cd wotoi`
 
-`$ cargo build`
+`$ cargo build --release`
+
+`$ sudo cp target/release/wotoi /usr/bin`
+
 
 ## Usage
 
 TBD.
+
+## Why is this the best of the worst
+Simple!
+
+Because I use no dependencies! That means it is automatically better....right?
