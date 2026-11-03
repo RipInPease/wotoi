@@ -6,14 +6,12 @@ This is an issue tracker inspired by Tsoding's [tatr](https://github.com/tsoding
 
 ## Installation
 
-`$ git clone https://github.com/RipInPease/wotoi.git`
-
-`$ cd wotoi`
-
-`$ cargo build --release`
-
-`$ sudo cp target/release/wotoi /usr/bin`
-
+```
+$ git clone https://github.com/RipInPease/wotoi.git
+$ cd wotoi
+$ cargo build --release
+$ sudo cp target/release/wotoi /usr/bin
+```
 
 ## Usage
 
