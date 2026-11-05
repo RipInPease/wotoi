@@ -1,13 +1,10 @@
 use std::env::args;
 use wotoi::cli::Args;
+use wotoi::app;
 
 fn main() {
-    //let args = args();
-//
-    //for arg in args {
-    //    println!("arg: {arg}");
-    //}
-    
-    let args = Args::from_args(args());
-    println!("{:#?}", args);
+    match Args::from_args(args()) {
+        Ok(args) => app::run_app(args),
+        Err(parse_error) => app::print_parse_error(parse_error),
+    }
 }

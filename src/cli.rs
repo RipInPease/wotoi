@@ -7,8 +7,9 @@ pub struct Args {
 pub enum Mode {
     Help,
     Create(CreateOptions),
+    Remote(String),
     List,
-    Edit
+    Edit(EditOptions)
 }
 
 #[derive(Debug)]
@@ -17,6 +18,11 @@ pub struct CreateOptions {
     pub priority: u8,
     pub tags: Option<Box<[String]>>,
     pub description: Option<String>
+}
+
+#[derive(Debug)]
+pub struct EditOptions {
+
 }
 
 #[derive(Debug)]
@@ -44,7 +50,13 @@ impl Args {
 
             "-l" | "--list" => Ok(Self { mode: Mode::List }),
 
-            _ => Err(ParseError::MissingCommand(cmd))
+            "-r" | "--remove" => Ok(Self { mode: Mode::Remote (
+                args.next().ok_or(ParseError::MissingCommand("-c [name] - Please specify the name of the issue to be removed".into()))?
+            )}),
+
+            "-e" | "--edit" => todo!(),
+
+            _ => Err(ParseError::UnkownCommand(cmd))
         }
     }
 }
@@ -59,8 +71,7 @@ impl CreateOptions {
         let mut description = None;
 
         let mut cmd = args.next();
-        'outer: loop {
-            if cmd.is_none() { break; }
+        'outer: while cmd.is_some() {
             
             match &cmd.as_mut().unwrap()[..] {
                 // Parse priority
@@ -81,7 +92,7 @@ impl CreateOptions {
                         match &v[..] {
                             "-p" | "--priority" | "-d" | "--description" => {
                                 tags = Some(tag_bfr.into_boxed_slice());
-                                cmd = args.next();
+                                cmd = Some(v);
                                 continue 'outer;
                             },
                             _ => {

@@ -15,7 +15,17 @@ $ sudo cp target/release/wotoi /usr/bin
 
 ## Usage
 
-TBD.
+### To create a new issue:
+```
+$ wotoi -c "Name_Of_Issue"
+$ wotoi --create "Name_Of_Issue"
+```
+
+### To delete an issue:
+```
+$ wotoi -r "Name_Of_Issue"
+$ wotoi --remove "Name_Of_Issue"
+```
 
 ## Why this is the best of the worst
 Simple!
