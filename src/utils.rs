@@ -1,5 +1,5 @@
 use crate::cli::CreateOptions;
-use crate::app::RunError;
+use crate::app::{RunError, SkillIssue};
 
 use std::path::Path;
 use std::io::{Error as IOError, ErrorKind as IOErrorKind, Write};
@@ -55,3 +55,19 @@ pub fn write_create_options_to_issue(create_options: CreateOptions, file: &mut F
     Ok(())
 }
 
+fn read_issues_from_dir<P: AsRef<Path>>(dir: P) -> Result<Vec<SkillIssue>, RunError> {
+    let mut res = Vec::with_capacity(16);
+
+    let read_dir = fs::read_dir(dir)?;
+
+    for entry in read_dir {
+        let entry = entry?;
+
+        if entry.file_type()?.is_dir() {
+            continue;
+        }
+
+        let file_name = entry.file_name();
+    }
+    Ok(res)
+}
