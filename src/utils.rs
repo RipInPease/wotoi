@@ -55,7 +55,7 @@ pub fn write_create_options_to_issue(create_options: CreateOptions, file: &mut F
     Ok(())
 }
 
-fn read_issues_from_dir<P: AsRef<Path>>(dir: P) -> Result<Vec<SkillIssue>, RunError> {
+pub fn get_issue_paths<P: AsRef<Path>>(dir: P) -> Result<Vec<String>, RunError> {
     let mut res = Vec::with_capacity(16);
 
     let read_dir = fs::read_dir(dir)?;
@@ -67,7 +67,20 @@ fn read_issues_from_dir<P: AsRef<Path>>(dir: P) -> Result<Vec<SkillIssue>, RunEr
             continue;
         }
 
-        let file_name = entry.file_name();
+        let file_path = match entry.path().into_string() {
+            Ok(s) => s,
+            Err(_) => continue,
+        };
+
+        if file_path.ends_with(".md") {
+            res.push(file_path);
+        }
     }
+
     Ok(res)
+}
+
+pub fn read_issue<P: AsRef<Path>>(path: P) -> Result<SkillIssue, RunError> {
+
+    todo!()
 }

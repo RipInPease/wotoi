@@ -32,6 +32,7 @@ pub fn run_app(args: Args) {
     let res = match args.mode {
         Mode::Create(create_options) => create_issue(create_options),
         Mode::Remote(issue_name) => remove_issue(issue_name),
+        Mode::List => list_issues(),
         _ => todo!()
     };
 
@@ -61,6 +62,17 @@ fn remove_issue(issue_name: String) -> Result<(), RunError> {
         return Err(e)?
     }
 
+    Ok(())
+}
+
+fn list_issues() -> Result<(), RunError>  {
+    let issue_paths = utils::get_issue_paths(ISSUES_DIR)?;
+
+    let mut issues = Vec::with_capacity(issue_paths.len());
+    for path in issue_paths {
+        let issue = utils::read_issue(path)?;
+        issues.push(issue);
+    }
     Ok(())
 }
 
