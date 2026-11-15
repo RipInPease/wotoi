@@ -2,7 +2,7 @@ use crate::cli::CreateOptions;
 use crate::app::{RunError, SkillIssue};
 
 use std::path::Path;
-use std::io::{Error as IOError, ErrorKind as IOErrorKind, Write};
+use std::io::{Error as IOError, ErrorKind as IOErrorKind, Write, Read, BufReader};
 use std::fs::{self, File};
 
 
@@ -55,6 +55,35 @@ pub fn write_create_options_to_issue(create_options: CreateOptions, file: &mut F
     Ok(())
 }
 
+/// Reads the next char from a reader.
+/// If it encounters an unknown char, it returns � 
+fn read_char<R: Read>(reader: &mut R) -> Result<char, IOError> {
+    let mut buf = [0; 4];
+    
+    reader.read_exact(&mut buf[0..1])?;
+
+    let first_byte = buf[0];
+
+    let remaining_bytes = match first_byte {
+        0b00000000..=0b01111111 => return Ok(
+                char::try_from(first_byte).unwrap_or(char::REPLACEMENT_CHARACTER)
+            ),
+        0b11000000..=0b11011111 => 1,
+        0b11100000..=0b11101111 => 2,
+        0b11110000..=0b11110111 => 3,
+        _ => return Ok(char::REPLACEMENT_CHARACTER)
+    };
+
+    println!("Total bytes of char: {}", remaining_bytes + 1);
+
+    reader.read_exact(&mut buf[1..remaining_bytes+1])?;
+    
+    match str::from_utf8(&buf[0..remaining_bytes+1]) {
+        Ok(s) => Ok(s.chars().next().unwrap_or(char::REPLACEMENT_CHARACTER)),
+        Err(_) => Ok(char::REPLACEMENT_CHARACTER)
+    }
+}
+
 pub fn get_issue_paths<P: AsRef<Path>>(dir: P) -> Result<Vec<String>, RunError> {
     let mut res = Vec::with_capacity(16);
 
@@ -81,6 +110,9 @@ pub fn get_issue_paths<P: AsRef<Path>>(dir: P) -> Result<Vec<String>, RunError> 
 }
 
 pub fn read_issue<P: AsRef<Path>>(path: P) -> Result<SkillIssue, RunError> {
+    let mut file = BufReader::new(
+        fs::File::open(path)?
+    );
 
     todo!()
 }
