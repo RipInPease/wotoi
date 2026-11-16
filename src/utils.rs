@@ -31,7 +31,7 @@ pub fn write_create_options_to_issue(create_options: CreateOptions, file: &mut F
     buf.push_str("# ");
     buf.push_str(&create_options.name);
 
-    buf.push_str("\n\n## Description: ");
+    buf.push_str("\n\n## Priority: ");
     buf.push_str(&format!("{}", create_options.priority));
     
     if let Some(tags) = create_options.tags {
