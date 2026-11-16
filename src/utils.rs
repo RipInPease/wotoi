@@ -110,9 +110,11 @@ pub fn get_issue_paths<P: AsRef<Path>>(dir: P) -> Result<Vec<String>, RunError> 
 }
 
 pub fn read_issue<P: AsRef<Path>>(path: P) -> Result<SkillIssue, RunError> {
-    let mut file = BufReader::new(
-        fs::File::open(path)?
-    );
+    let file = fs::read_to_string(path)?;
+
+    let name_pos = file.find("# ");
+
+    
 
     todo!()
 }

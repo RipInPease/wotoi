@@ -1,3 +1,3 @@
-𝄞# This is an issue
+# This is an issue
 
 ## Description: 127
