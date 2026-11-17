@@ -35,17 +35,17 @@ pub fn write_create_options_to_issue(create_options: CreateOptions, file: &mut F
     buf.push_str(&format!("{}", create_options.priority));
     
     if let Some(tags) = create_options.tags {
-        buf.push_str("\n\n## Tags:\n");
+        buf.push_str("\n\n## Tags:");
 
         for tag in tags {
+            buf.push('\n');
             buf.push_str("- ");
             buf.push_str(&tag);
-            buf.push('\n');
         }
     }
 
+    buf.push_str("\n\n### Description:\n");
     if let Some(description) = create_options.description {
-        buf.push_str("\n### Description:\n");
         buf.push_str(&description);
     }
 
